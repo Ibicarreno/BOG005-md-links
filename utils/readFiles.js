@@ -1,6 +1,24 @@
 const fs = require("fs");
 
 function readMdFiles(filesArray){
+
+  let promises = [];
+
+  filesArray.map((fileObject) => {
+    promises.push(new Promise((resolve, reject) => {
+      fs.readFile(fileObject.path, "utf-8", (error, data) => {
+        if (error) {
+          console.log("error");
+        } else {
+          resolve(data);
+        }
+      });
+    }));
+  })
+
+  return promises
+
+
   // Leer los archivo .md
   let content = new Promise((resolve, reject) => {
     const promises = filesArray.map((fileObject) => {
@@ -22,20 +40,15 @@ function readMdFiles(filesArray){
 
 function loadLinks(dataPromisesArray){
 
-  let response = new Promise((resolve, reject) => {
-    dataPromisesArray.then(promise => {
-      Promise.all(promise).then(data => {
-        let links = [];
-        //readfile con promises all, como esperar que se lean todos los archivos
-        return new Promise((resolve, reject) => {
-          links.push(1);
-          resolve(links);
-        })
-      })
+  let promises = [];
+
+  dataPromisesArray.map(promise => {
+    promise.then(data =>{
+      //console.log(data)
     })
   })
 
-  return response
+  return promises
 }
 
 

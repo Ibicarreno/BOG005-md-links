@@ -25,5 +25,8 @@
   "homepage": "https://github.com/Ibicarreno/BOG005-md-links#readme",
   "devDependencies": {
     "marked": "^4.0.19"
+  },
+  "dependencies": {
+    "node-fetch": "^2.6.7"
   }
 }
