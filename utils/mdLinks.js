@@ -2,6 +2,7 @@ const fs = require("fs");
 const path = require("path");
 const marked = require("marked");
 const fetch = require("node-fetch");
+const { CLIENT_RENEG_LIMIT } = require("tls");
 
 const readFilesPromises = (listFilesMdArray) => {
   let promisesReadFiles = [];
@@ -70,7 +71,7 @@ const getStatusPromises = (linksPromise) => {
                 href: link.href,
                 text: link.text,
                 status_response: statusLinks,
-                status: res.status
+                status: res.status,
               });
             });
           })
@@ -81,10 +82,45 @@ const getStatusPromises = (linksPromise) => {
   });
 };
 
-//const statusLinksPromises
+// const statsLinks = (linksStatusPromise) => {
+//   let resultStats = [];
+//   let totalLinks;
+//   let uniqueLinks;
+//   linksStatusPromise.then((linksArray) => {
+//     let totalLinksArray = [];
+//     linksArray.map((links) => {
+//       totalLinksArray.push(links.href);
+//       totalLinks = totalLinksArray.length;
+//       uniqueLinks = new Set(totalLinksArray).size;
+//     });
+//     resultStats = {
+//       total: totalLinks,
+//       Unique: uniqueLinks,
+//     };
+//     console.log(resultStats)
+//   });
+//   console.log(resultStats)
+//   return resultStats;
+// };
+
+const statsLinks = (linksStatusPromise) => {;
+  let total = []
+  linksStatusPromise.then((linksArray) => {
+    const broken = linksArray.filter((links) => links.status_response === 'fail').length;
+    total = {
+      'Total': linksArray.length,
+      'Unique': new Set(linksArray.map((linkObject) => linkObject.href)).size,
+      'Broken': broken
+    }
+    console.log(total)
+  })
+}
+
+
 
 module.exports = {
   readFilesPromises,
   getLinksPromises,
   getStatusPromises,
+  statsLinks,
 };
