@@ -19,6 +19,10 @@
   },
   "author": "Ibeth Carreño",
   "license": "ISC",
+  "preferGlobal": true,
+  "bin": {
+    "mdLinks": "./utils/cli.js"
+  },
   "bugs": {
     "url": "https://github.com/Ibicarreno/BOG005-md-links/issues"
   },

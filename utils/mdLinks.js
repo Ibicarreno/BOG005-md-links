@@ -2,7 +2,6 @@ const fs = require("fs");
 const path = require("path");
 const marked = require("marked");
 const fetch = require("node-fetch");
-const { CLIENT_RENEG_LIMIT } = require("tls");
 
 const readFilesPromises = (listFilesMdArray) => {
   let promisesReadFiles = [];
@@ -103,17 +102,20 @@ const getStatusPromises = (linksPromise) => {
 //   return resultStats;
 // };
 
-const statsLinks = (linksStatusPromise) => {;
-  let total = []
-  linksStatusPromise.then((linksArray) => {
+const statsLinks = (linksArray) => {
+    return {
+      'Total': linksArray.length,
+      'Unique': new Set(linksArray.map((linkObject) => linkObject.href)).size
+    }
+}
+
+const statsAndValidateLinks = (linksArray) => {
     const broken = linksArray.filter((links) => links.status_response === 'fail').length;
-    total = {
+    return {
       'Total': linksArray.length,
       'Unique': new Set(linksArray.map((linkObject) => linkObject.href)).size,
       'Broken': broken
     }
-    console.log(total)
-  })
 }
 
 
@@ -123,4 +125,5 @@ module.exports = {
   getLinksPromises,
   getStatusPromises,
   statsLinks,
+  statsAndValidateLinks
 };

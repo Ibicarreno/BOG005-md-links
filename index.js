@@ -1,26 +1,41 @@
 const filesArray = require('./utils/list-md-links')
-const process = require('process');
-const {readFilesPromises, getLinksPromises, getStatusPromises, statsLinks} = require('./utils/mdLinks')
+const {readFilesPromises, getLinksPromises, getStatusPromises} = require('./utils/mdLinks')
 
-// Path que ingresa el usurio
-const filePath = process.argv[2];
+// Funcion mdLinks
+const mdLinks = (filePath, options) => {
+  const arrayMdFiles = filesArray(filePath)
 
-//Diferentes opciones de validacion
-// const optionValidationOne = process.argv[3];
-// const optionValidationTwo = process.argv[4];
+  return new Promise((resolve, reject) => {
+    if (options.validate == true) {
+      getStatusPromises(getLinksPromises(readFilesPromises(arrayMdFiles)))
+                .then(res => {
+                  resolve(res)
+                })
+    } else{
+      getLinksPromises(readFilesPromises(arrayMdFiles))
+            .then(res => {
+                    resolve(res.flat());
+                })
+    }
+  })
+}
 
-// const mdLinks = (filePath, optionValidationOne, optionValidationTwo) => {
-//   if(optionValidationOne === ''){
-//     // Imprimir file, href, text
-//   }
-//   else if(optionValidationOne === '--validate' || optionValidationOne === '--v'){
-//     // Imprimir file, href, text, statusText y status
-//   }
-//   else if(optionValidationOne === '--stats' || optionValidationOne === '--s'){
-//     // Imprimir total Links y Unique links
-//   }
+module.exports = {
+  mdLinks
+}
 
-// }
+
+
+
+
+  // if(options.stats == true) {
+  //statsLinks(getStatusPromises(getLinksPromises(readFilesPromises(arrayMdFiles))))
+  // } else {
+  //   statsAndValidateLinks(getStatusPromises(getLinksPromises(readFilesPromises(arrayMdFiles))))
+  // }
+
+
+
 
 
 
@@ -40,9 +55,9 @@ const filePath = process.argv[2];
 
 // const statsLinksArray = statsLinks(statusLinksArray)
 
-// //console.log(statsLinksArray)
+//console.log(statsLinksArray)
 
-// statusLinksArray.then(result => {console.log(result)})
+//statusLinksArray.then(result => {console.log(result)})
 //loadLinks(dataPromisesArray)
 
 //OJO CON ESTOOOO
@@ -69,45 +84,4 @@ const filePath = process.argv[2];
 
 
 
-//const filesArray = require('./utils/list-md-links')
-//const mdLinks = require('./utils/md-links')
-//const mdLinksR = require('./utils/md-links-resv')
 
-//const statusHttp = require('./utils/status-links')
-
-//const filePath = './'
-//const arrayMdFiles = filesArray(filePath)
-
-//const readFile = mdLinksR.readFile(arrayMdFiles).then()
-//console.log(readFile)
-
-//const result = mdLinks(arrayMdFiles)
-
-
-// const result = mdLinks(arrayMdFiles)
-//   .then(content => {Promise.all(content)
-//     .then(x => {console.log(x.flat())})
-// })
-
-
-
-//const statusLinks = statusHttp(result)
-
-
-
-const mdLinks = (filePath, options) => {
-  const arrayMdFiles = filesArray(filePath)
-  if (options.validate == true) {
-    getStatusPromises(getLinksPromises(readFilesPromises(arrayMdFiles)))
-              .then(res => {
-                console.log(res)
-              })
-  } else {
-    getLinksPromises(readFilesPromises(arrayMdFiles))
-          .then(res => {
-                  console.log(res);
-              })
-
-  }
-}
-mdLinks(filePath, { validate: true, stats: true })
