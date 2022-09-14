@@ -81,27 +81,6 @@ const getStatusPromises = (linksPromise) => {
   });
 };
 
-// const statsLinks = (linksStatusPromise) => {
-//   let resultStats = [];
-//   let totalLinks;
-//   let uniqueLinks;
-//   linksStatusPromise.then((linksArray) => {
-//     let totalLinksArray = [];
-//     linksArray.map((links) => {
-//       totalLinksArray.push(links.href);
-//       totalLinks = totalLinksArray.length;
-//       uniqueLinks = new Set(totalLinksArray).size;
-//     });
-//     resultStats = {
-//       total: totalLinks,
-//       Unique: uniqueLinks,
-//     };
-//     console.log(resultStats)
-//   });
-//   console.log(resultStats)
-//   return resultStats;
-// };
-
 const statsLinks = (linksArray) => {
     return {
       'Total': linksArray.length,

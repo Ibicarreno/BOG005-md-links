@@ -1,65 +1,48 @@
 const fs = require('fs');
 const path = require('path');
 
-module.exports = listMdLinks = (filePath) => {
-//const listMdLinks = (filePath) => {
-  let finalPath;
-  //let filesArray = ''
-  let filesArray = []
-  // Vamos a verificar si el path es relativo o absoluto
+const absolutPath = (filePath) => {
+  let absolutPath;
   if (path.isAbsolute(filePath)){
-    // Si es absoluto
-    finalPath = filePath;
+    absolutPath = filePath;
   }
   else{
-    // Si es relativo
-    finalPath = path.resolve(filePath) ;
+    absolutPath = path.resolve(filePath) ;
   }
+  return absolutPath
+}
 
-  // Vamos a verificar el si el path existe
+const listMdLinks = (filePath) => {
+
+  let finalPath = absolutPath(filePath)
+  let filesArray = []
   if(fs.existsSync(finalPath)){
-    // Vamos a verificar si es un archivo o un directorio
-    // Si es un archivo = file
-    if(fs.statSync(finalPath).isFile()){
-      // Verificar que sea un archivo .md
-      if(path.extname(finalPath) === '.md'){
+    if(fs.statSync(finalPath).isFile() && path.extname(finalPath) === '.md'){
           filesArray.push({'path' : finalPath})
-          // mdLinks(arrayMdFiles)
-          //   .then(content => {Promise.all(content)
-          //   .then(x => {console.log(x)})
-          //   })
-
-          //filesArray.push(finalPath)
-          //filesArray = finalPath
-      }
-      else{
-        throw error;
-      }
     }
     // Si es un directorio
-    else if (fs.statSync(finalPath).isDirectory()){
-      //listMdLinks(finalPath)
-      // Primero buscamos los archivos
-      fs.readdirSync(finalPath).map(file => {
-        // Condicional para seleccionar solo los .md
-        if(path.extname(file) == '.md'){
-          filesArray.push({'path' : finalPath + '/' + file})
-          //filesArray.push(finalPath + '/' + file)
-          //filesArray = finalPath + '/' + file
-
+    else if (fs.statSync(finalPath).isFile() && path.extname(finalPath) !== '.md'){
+      console.log('Error! su archivo no es .md, vuelve a intentarlo 😄')
+    }
+    else {
+      fs.readdirSync(finalPath).forEach(file => {
+        let newPath = path.join(finalPath, file)
+        if((fs.statSync(newPath).isDirectory())){
+          filesArray = filesArray.concat(listMdLinks(newPath))
+        } else {
+          if(path.extname(newPath) === '.md'){
+            filesArray.push({'path' : newPath})
+          }
         }
       })
     }
-    else {
-      throw error;
-    }
+  }
 
+  return filesArray
 }
-else {
-  throw error;
-}
-//console.log(filesArray)
-return filesArray
 
+module.exports = {
+  listMdLinks,
+  absolutPath
 }
-//module.exports = listMdLinks;
+
