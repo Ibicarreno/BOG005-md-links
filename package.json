@@ -1,10 +1,10 @@
 {
-  "name": "md-links",
+  "name": "icarreno-md-links",
   "version": "0.1.0",
   "engines": {
     "node": ">=14.x"
   },
-  "description": "## Índice",
+  "description": "library that selects the links of a file .md and validates its status",
   "main": "index.js",
   "directories": {
     "test": "test"
