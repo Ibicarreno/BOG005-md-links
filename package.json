@@ -4,7 +4,7 @@
   "engines": {
     "node": ">=14.x"
   },
-  "description": "library that selects the links of a file .md and validates its status",
+  "description": "library that selects the links of a file .md and validates status and stats",
   "main": "index.js",
   "directories": {
     "test": "test"
@@ -18,7 +18,7 @@
     "type": "git",
     "url": "git+https://github.com/Ibicarreno/BOG005-md-links.git"
   },
-  "author": "Ibeth Carreño",
+  "author": "Ibeht Carreño",
   "license": "ISC",
   "preferGlobal": true,
   "bin": {
